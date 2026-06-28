@@ -20,7 +20,7 @@ export default async function Home() {
     <div className="md:h-screen md:overflow-hidden flex flex-col pt-16" style={{ background: '#080404' }}>
 
       {/* ── HERO ── */}
-      <section className="flex-[6] flex flex-col md:flex-row items-center overflow-hidden relative min-h-[55vh] md:min-h-0">
+      <section className="flex-[6] flex flex-col md:flex-row items-center overflow-hidden relative h-[55vh] md:h-auto md:min-h-0">
 
         {/* Glow rojo — solo desktop */}
         <div className="hidden md:block absolute top-1/2 left-0 -translate-y-1/2 w-[400px] h-[400px] rounded-full opacity-10 pointer-events-none"
