@@ -7,6 +7,16 @@ interface Props {
   products: ProductDetail[];
 }
 
+const CATEGORY_ORDER = ['Poke', 'Makis', 'Entradas Frías', 'Los Fusionados', 'Otros'];
+
+function getCategory(sku: string): string {
+  if (sku.startsWith('POKE')) return 'Poke';
+  if (sku.startsWith('MAKI')) return 'Makis';
+  if (sku.startsWith('ENTR')) return 'Entradas Frías';
+  if (sku.startsWith('FUSI')) return 'Los Fusionados';
+  return 'Otros';
+}
+
 export default function MenuGrid({ products }: Props) {
   const [selected, setSelected] = useState<ProductDetail | null>(null);
   const { addItem } = useCart();
@@ -25,10 +35,22 @@ export default function MenuGrid({ products }: Props) {
     );
   }
 
+  const grouped = CATEGORY_ORDER.reduce((acc, cat) => {
+    const items = products.filter(p => getCategory(p.sku ?? '') === cat);
+    if (items.length > 0) acc[cat] = items;
+    return acc;
+  }, {} as Record<string, ProductDetail[]>);
+
   return (
     <>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {products.map(p => (
+      {Object.entries(grouped).map(([category, items]) => (
+        <section key={category} className="mb-12">
+          <div className="flex items-center gap-4 mb-6">
+            <h2 className="text-[#f0e6e6] text-xl font-bold tracking-widest uppercase">{category}</h2>
+            <div className="flex-1 h-px bg-[#8b0000]/30" />
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {items.map(p => (
           <button
             key={p.id}
             onClick={() => setSelected(p)}
@@ -81,8 +103,10 @@ export default function MenuGrid({ products }: Props) {
               </div>
             </div>
           </button>
-        ))}
-      </div>
+            ))}
+          </div>
+        </section>
+      ))}
 
       <ProductModal
         product={selected}

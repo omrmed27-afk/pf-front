@@ -10,6 +10,7 @@ export interface ProductDetail {
   stock: number;
   ingredients: string[];
   is_featured: boolean;
+  sku?: string;
 }
 
 interface Props {
