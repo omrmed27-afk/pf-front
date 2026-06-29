@@ -1,12 +1,14 @@
 'use client';
 import { useCart } from '@/context/CartContext';
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { findOrCreateCustomer } from '@/lib/adminApi';
 
 const inputClass = "w-full bg-[#0a0303] border border-[#c49a6c]/20 text-[#f0e6e6] px-3 py-2.5 text-sm focus:outline-none focus:border-[#c49a6c]/50 transition placeholder:text-[#b08080]/30";
 
 export default function CartSidebar() {
   const { items, isOpen, closeCart, removeItem, updateQuantity, total, clearCart } = useCart();
+  const router = useRouter();
   const [checkout, setCheckout] = useState(false);
   const [form, setForm] = useState({ name: '', email: '', address: '' });
   const [state, setState] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
@@ -173,7 +175,7 @@ export default function CartSidebar() {
                 <div className="flex flex-col items-center justify-center h-full gap-4 text-center">
                   <span className="text-5xl opacity-10">🍜</span>
                   <p className="text-[#b08080]/50 text-sm italic">Tu pedido está vacío</p>
-                  <button onClick={handleClose}
+                  <button onClick={() => { handleClose(); router.push('/menu'); }}
                     className="text-[#c49a6c] text-xs tracking-[0.3em] uppercase hover:text-[#f0e6e6] transition">
                     Ver menú →
                   </button>
